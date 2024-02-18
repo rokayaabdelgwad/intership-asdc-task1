@@ -10,7 +10,7 @@ export class UserDto {
 
 	@IsString()
     @IsNotEmpty()
-    readonly password:String
+    readonly password:string
 
 
     @ApiProperty({ example: 36 })
