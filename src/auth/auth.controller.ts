@@ -2,8 +2,8 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
-import { dot } from 'node:test/reporters';
-import { GoogleDto } from './dto/google.dto';
+
+// import { GoogleDto } from './dto/google.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,11 +21,16 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
 
+  // @Get('google-login')
+  // @UseGuards(AuthGuard('google'))
+  // async googleAuthRedirect(@Body() dto: GoogleDto) {
+  //   const data = await this.authService.googleLogin(dto);
+
+  //   return data;
+
   @Get('google-login')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Body() dto: GoogleDto) {
-    const data = await this.authService.googleLogin(dto);
-
-    return data;
+  async googleAuthRedirect(@Req() req) {
+    return this.authService.googleLogin(req);
   }
 }

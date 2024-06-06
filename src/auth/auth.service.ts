@@ -75,7 +75,7 @@ export class AuthService {
     };
   }
 
-  async googleLogin(dto: AuthDto) {
+  async googleLogin(req) {
     if (!req.user) throw new ForbiddenException('No user from Google');
 
     const { email, firstName, lastName, picture } = req.user;
