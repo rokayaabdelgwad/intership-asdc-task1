@@ -1,14 +1,11 @@
-
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { UserDto } from './dto';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { forwardRef } from '@nestjs/common';
+import { PrismaService } from './../prisma/prisma.service';
+
 @Module({
-  // imports:[TypeOrmModule.forFeature([UserDto]),forwardRef(() => PrismaService)],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, PrismaService],
+  exports: [UserService], // Ensure UserService is exported if needed elsewhere
 })
 export class UserModule {}

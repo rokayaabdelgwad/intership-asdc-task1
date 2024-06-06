@@ -8,14 +8,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
+model user{
   id  Int  @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   email String  @unique
-  hash String
+  hash String?
   firstName String?  //optional 
   lastName String?  //optional
+  picture String? //optional
   
 
 }
+model expiredTokens {
+  id          Int      @id @default(autoincrement())
+  token       String   @db.VarChar(255)
+  email       String
+  createdAt   DateTime @default(now())
+  isExpired   Boolean  @default(false)
+  client_id   Int
+  contract_id Int
+
+  deleted Boolean @default(false)
+
+  @@index([deleted])
+}
+

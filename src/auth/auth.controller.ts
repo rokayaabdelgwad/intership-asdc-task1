@@ -1,24 +1,31 @@
-import { Body, Controller,Post } from "@nestjs/common";
-import { AuthService } from "./auth.service";
-import { Request } from 'express';
-import { AuthDto } from "./dto";
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth.service';
+import { AuthDto } from './dto';
+import { dot } from 'node:test/reporters';
+import { GoogleDto } from './dto/google.dto';
+
 @Controller('auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
-export class AuthController{
-    constructor(private authService: AuthService){ }
+  @Post('signup')
+  signup(@Body() dto: AuthDto) {
+    return this.authService.signup(dto);
+  }
+  @Post('login')
+  signin(@Body() dto: AuthDto) {
+    return this.authService.signin(dto);
+  }
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req) {}
 
-    @Post("signup")
-    
-    signup(@Body () dto:AuthDto){
-        
-        return this.authService.signup(dto)
-    }
-    @Post("login")
-    signin(@Body () dto:AuthDto){
-        
-        return  this.authService.signin(dto)
-    }
+  @Get('google-login')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Body() dto: GoogleDto) {
+    const data = await this.authService.googleLogin(dto);
 
-    
+    return data;
+  }
 }
-
